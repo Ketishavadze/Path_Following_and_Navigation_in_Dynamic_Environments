@@ -1,0 +1,61 @@
+task3:
+  video_path: "data/video/pedestrians.mp4"
+  output_path: "outputs/task3/task3_two_robots_navigation.mp4"
+
+optical_flow:
+  pyr_scale: 0.5
+  levels: 3
+  winsize: 15
+  iterations: 3
+  poly_n: 5
+  poly_sigma: 1.2
+  flags: 0
+  flow_scale: 6.0
+
+pedestrian_detection:
+  thresh: 60
+  area_min: 40
+  area_max: 400
+
+robots:
+  # K-VRC (top flow)
+  kvrc:
+    name: "K-VRC"
+    color_bgr: [0, 0, 255]
+    start_x: 30.0
+    start_y_ratio: 0.35
+    lane_y_ratio: 0.35      
+    lane_half_height: 55.0   
+    start_dir: 1
+ 
+  # XBOT (bottom flow)
+  xbot:
+    name: "XBOT"
+    color_bgr: [255, 0, 0]
+    start_x_from_right: 30.0
+    start_y_ratio: 0.70
+    lane_y_ratio: 0.70      # NEW
+    lane_half_height: 55.0  # NEW
+    start_dir: -1
+
+control:
+  m: 1.0
+  kv: 6.0
+  kd: 2.5
+  krep: 1800.0
+  rsafe: 28.0
+  klane: 0.35       
+  klane_d: 0.60      
+limits:
+  dt: 1.0
+  amax: 6.0
+  vmax: 12.0
+  vmin_x: 2.0
+  clip_vy: 1.5
+
+render:
+  draw_ped_centers: true
+  ped_center_radius: 2
+  robot_radius: 8
+  label_scale: 0.55
+  label_thickness: 2

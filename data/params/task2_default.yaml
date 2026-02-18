@@ -1,0 +1,21 @@
+width: 110.0
+
+numerics:
+  dt: 0.01
+  steps: 3500
+  sample_min_dist_every: 10
+
+swarm:
+  NA: 10
+  NB: 10
+  lane_ratio: 0.32
+
+robot:
+  m: 1.0
+  kp: 9.0
+  kd: 10.0
+  kb: 140.0
+  krep: 3200.0
+  Rsafe: 36.0
+  lookahead: 20.0
+  vmax: 200.0

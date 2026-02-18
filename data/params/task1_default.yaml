@@ -1,0 +1,16 @@
+width: 110.0
+
+numerics:
+  dt: 0.02
+  steps: 5000
+  s_samples: 900
+
+
+robot:
+  m: 1.0
+  kp: 8.0
+  kd: 5.0
+  kb: 120.0
+  lookahead: 10.0
+stop:
+  end_tol: 6.0
