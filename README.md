@@ -147,21 +147,22 @@ Robots:
 
 # Mathematical Model
 
+
 All robots use second-order dynamics:
 
-[
+$$
 \dot{x} = v
-]
+$$
 
-[
+$$
 \dot{v} = \frac{1}{m} (F_{track} + F_{rep} + F_{lane})
-]
+$$
 
 where:
 
-* (F_{track}) = tracking control
-* (F_{rep}) = smooth repulsion
-* (F_{lane}) = vertical band stabilization (Task 3)
+* $F_{track}$ = tracking control
+* $F_{rep}$ = smooth repulsion
+* $F_{lane}$ = vertical band stabilization (Task 3)
 
 Numerical integration is performed using **RK4**.
 

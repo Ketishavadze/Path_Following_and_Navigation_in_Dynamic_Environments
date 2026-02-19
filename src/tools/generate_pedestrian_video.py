@@ -2,9 +2,7 @@ import os
 import cv2
 import numpy as np
 
-# ----------------------------
-# Configuration
-# ----------------------------
+
 WIDTH = 640
 HEIGHT = 480
 FPS = 25
@@ -12,15 +10,13 @@ DURATION_SECONDS = 20
 N_PEDESTRIANS_PER_FLOW = 25
 
 RADIUS = 6
-SPEED = 2.5  # pixels per frame
+SPEED = 2.5 
 NOISE_STD = 0.3
 
 OUTPUT_PATH = "data/video/pedestrians.mp4"
 
 
-# ----------------------------
-# Pedestrian Class
-# ----------------------------
+
 class Pedestrian:
     def __init__(self, x, y, vx, vy):
         self.pos = np.array([x, y], dtype=float)
@@ -30,7 +26,6 @@ class Pedestrian:
         noise = np.random.normal(0, NOISE_STD, 2)
         self.pos += self.vel + noise
 
-        # Wrap around horizontally
         if self.pos[0] < -20:
             self.pos[0] = WIDTH + 20
         if self.pos[0] > WIDTH + 20:
@@ -44,19 +39,15 @@ class Pedestrian:
                    -1)
 
 
-# ----------------------------
-# Generate pedestrians
-# ----------------------------
+
 def create_pedestrians():
     pedestrians = []
 
-    # Flow 1: Left → Right
     for _ in range(N_PEDESTRIANS_PER_FLOW):
         x = np.random.uniform(0, WIDTH)
         y = np.random.uniform(0, HEIGHT * 0.45)
         pedestrians.append(Pedestrian(x, y, SPEED, 0))
 
-    # Flow 2: Right → Left
     for _ in range(N_PEDESTRIANS_PER_FLOW):
         x = np.random.uniform(0, WIDTH)
         y = np.random.uniform(HEIGHT * 0.55, HEIGHT)
@@ -65,9 +56,7 @@ def create_pedestrians():
     return pedestrians
 
 
-# ----------------------------
-# Main generation
-# ----------------------------
+
 def main():
     os.makedirs("data/video", exist_ok=True)
 
@@ -80,7 +69,6 @@ def main():
     for frame_idx in range(total_frames):
         frame = np.ones((HEIGHT, WIDTH, 3), dtype=np.uint8) * 255
 
-        # Optional: draw separation line
         cv2.line(frame,
                  (0, HEIGHT // 2),
                  (WIDTH, HEIGHT // 2),

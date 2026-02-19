@@ -8,7 +8,7 @@ import cv2
 def save_task1_outputs(mask, sx, sy, s_max, width, traj, border_dist, out_dir="outputs/task1"):
     os.makedirs(out_dir, exist_ok=True)
 
-    from src.path.corridor import corridor_bounds  # local import
+    from src.path.corridor import corridor_bounds 
 
     s_grid = np.linspace(0.0, s_max, 700)
     center, left, right = corridor_bounds(sx, sy, s_grid, width)
@@ -49,7 +49,6 @@ def save_task2_plots(mask, sx, sy, s_max, width, traj_A, traj_B, min_dists, para
     s_grid = np.linspace(0.0, s_max, 700)
     center, left, right = corridor_bounds(sx, sy, s_grid, width)
 
-    # Map plot
     plt.figure(figsize=(9, 9))
     plt.imshow(mask, cmap="gray", origin="upper")
     plt.plot(center[:, 0], center[:, 1], linewidth=2)
@@ -62,7 +61,6 @@ def save_task2_plots(mask, sx, sy, s_max, width, traj_A, traj_B, min_dists, para
         plt.scatter(A_last[:, 0], A_last[:, 1], s=25, label="A→B")
         plt.scatter(B_last[:, 0], B_last[:, 1], s=25, label="B→A")
 
-        # One trajectory from each group for clarity
         plt.plot(traj_A[:, 0, 0], traj_A[:, 0, 1], linewidth=2)
         plt.plot(traj_B[:, 0, 0], traj_B[:, 0, 1], linewidth=2)
 
@@ -74,7 +72,6 @@ def save_task2_plots(mask, sx, sy, s_max, width, traj_A, traj_B, min_dists, para
     plt.close()
     print(f"Saved: {path1}")
 
-    # Min distance plot
     plt.figure(figsize=(7, 4))
     plt.plot(min_dists)
     plt.axhline(params["Rsafe"], linestyle="--")
@@ -91,7 +88,7 @@ def save_task2_plots(mask, sx, sy, s_max, width, traj_A, traj_B, min_dists, para
 def save_task2_gif(mask, sx, sy, s_max, width, traj_A, traj_B, gif_cfg, out_dir="outputs/task2"):
     os.makedirs(out_dir, exist_ok=True)
 
-    from src.path.corridor import corridor_bounds  # local import
+    from src.path.corridor import corridor_bounds 
 
     s_grid = np.linspace(0.0, s_max, 700)
     center, left, right = corridor_bounds(sx, sy, s_grid, width)
@@ -165,10 +162,8 @@ def save_task1_gif(mask, sx, sy, s_max, width, traj,
         ax.plot(left[:, 0], left[:, 1], linewidth=1)
         ax.plot(right[:, 0], right[:, 1], linewidth=1)
 
-        # robot trajectory so far
         ax.plot(traj[:k+1, 0], traj[:k+1, 1], linewidth=2)
 
-        # current robot position
         ax.scatter(traj[k, 0], traj[k, 1], s=80)
 
         ax.set_xlim(0, mask.shape[1])

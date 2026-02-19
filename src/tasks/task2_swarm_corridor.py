@@ -29,7 +29,7 @@ def simulate_task2(sx, sy, s_max: float, cfg: dict):
     lane_ratio = float(cfg["swarm"]["lane_ratio"])
     lane = width * lane_ratio
 
-    params = dict(cfg["robot"])  # kp,kd,krep,Rsafe,lookahead,vmax...
+    params = dict(cfg["robot"])  
     params["m"] = float(params["m"])
     params["kp"] = float(params["kp"])
     params["kd"] = float(params["kd"])
@@ -62,7 +62,6 @@ def simulate_task2(sx, sy, s_max: float, cfg: dict):
         if step % sample_min_dist_every == 0:
             min_dists.append(min_pairwise_distance(all_pos))
 
-        # Update A
         new_A = states_A.copy()
         for i in range(NA):
             my_gid = i
@@ -80,7 +79,6 @@ def simulate_task2(sx, sy, s_max: float, cfg: dict):
             st[2:4] = clamp_speed(st[2:4], params["vmax"])
             new_A[i] = st
 
-        # Update B
         new_B = states_B.copy()
         for i in range(NB):
             my_gid = NA + i
@@ -100,7 +98,6 @@ def simulate_task2(sx, sy, s_max: float, cfg: dict):
 
         states_A, states_B = new_A, new_B
 
-        # Early stop when most reached ends
         endB = np.array([sx(s_max), sy(s_max)], dtype=float)
         endA = np.array([sx(0.0), sy(0.0)], dtype=float)
 

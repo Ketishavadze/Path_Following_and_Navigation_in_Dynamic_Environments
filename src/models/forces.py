@@ -9,11 +9,7 @@ def clamp_speed(v: np.ndarray, vmax: float) -> np.ndarray:
     return v * (vmax / n)
 
 def repulsion_smooth(xi, xj, krep: float, Rsafe: float):
-    """
-    Smooth repulsion:
-    for d < Rsafe: magnitude ~ (1/d - 1/Rsafe)
-    avoids the extreme explosion of 1/d^3.
-    """
+  
     dvec = xi - xj
     d = np.linalg.norm(dvec)
     if d < 1e-6:
@@ -25,15 +21,11 @@ def repulsion_smooth(xi, xj, krep: float, Rsafe: float):
     return krep * mag * dir
 
 def clamp_vec(v: np.ndarray, vmax: float) -> np.ndarray:
-    """Alias-style clamp for generic vectors (Task3 uses accel clamp)."""
     return clamp_speed(v, vmax)
 
 
 def repulsion_sum(x: np.ndarray, centers: list, krep: float, Rsafe: float) -> np.ndarray:
-    """
-    Sum smooth repulsion from many obstacle centers.
-    Uses repulsion_smooth() for each pair.
-    """
+ 
     F = np.zeros(2, dtype=float)
     for c in centers:
         F += repulsion_smooth(x, c, krep=krep, Rsafe=Rsafe)

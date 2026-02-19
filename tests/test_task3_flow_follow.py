@@ -1,4 +1,3 @@
-# tests/test_task3_flow_follow.py
 import cv2
 import numpy as np
 
@@ -7,7 +6,6 @@ def test_task3_optical_flow_two_opposite_flows():
     h, w = 240, 320
     rng = np.random.default_rng(0)
 
-    # Build two frames: top moves +dx, bottom moves -dx
     f0 = np.ones((h, w, 3), dtype=np.uint8) * 255
     f1 = np.ones((h, w, 3), dtype=np.uint8) * 255
 

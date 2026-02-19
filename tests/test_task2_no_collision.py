@@ -1,4 +1,3 @@
-# tests/test_task2_no_collision.py
 import numpy as np
 
 from src.path.skeleton_route import skeleton_path, nearest_skeleton_pixel, bfs_shortest_path
@@ -21,7 +20,7 @@ def test_task2_no_collision_basic(s_curve_mask):
     s_max = float(s[-1])
 
     cfg = {
-        "width": 120.0,  # safer corridor
+        "width": 120.0,  
         "numerics": {"dt": 0.01, "steps": 2000, "sample_min_dist_every": 10},
         "swarm": {"NA": 3, "NB": 3, "lane_ratio": 0.45},
         "robot": {
@@ -39,7 +38,6 @@ def test_task2_no_collision_basic(s_curve_mask):
 
     traj_A, traj_B, min_dists, params, width = simulate_task2(sx, sy, s_max, cfg)
 
-    # Ignore the very first sample (initial placement may be tight)
     if len(min_dists) > 2:
         md = float(np.min(min_dists[1:]))
     else:

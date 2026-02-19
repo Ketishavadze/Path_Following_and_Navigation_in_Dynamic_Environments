@@ -1,10 +1,7 @@
 import numpy as np
 
 def rk4_step(state: np.ndarray, dt: float, accel_func):
-    """
-    state = [x, y, vx, vy]
-    accel_func(x, v) -> [ax, ay]
-    """
+   
     def f(st):
         x = st[0:2]
         v = st[2:4]

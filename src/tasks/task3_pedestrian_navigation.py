@@ -121,7 +121,6 @@ def run_task3(cfg):
 
     prev_gray = cv2.cvtColor(prev_frame, cv2.COLOR_BGR2GRAY)
 
-    # init robots
     kvrc_cfg = robots_cfg["kvrc"]
     xbot_cfg = robots_cfg["xbot"]
 
@@ -142,7 +141,6 @@ def run_task3(cfg):
         color_bgr=tuple(xbot_cfg["color_bgr"]),
     )
 
-    # bounds for direction switching
     margin = float(ren.get("bounds_margin", 30))
     left_x = margin
     right_x = float(w) - margin
@@ -173,7 +171,6 @@ def run_task3(cfg):
             area_max=det["area_max"],
         )
 
-        # update both robots
         if not update_robot(kvrc, flow, ped_centers, cfg, w, h):
             kvrc.pos = np.array([float(kvrc_cfg["start_x"]), float(h) * float(kvrc_cfg["start_y_ratio"])], dtype=float)
             kvrc.vel = np.array([0.0, 0.0], dtype=float)
@@ -185,7 +182,6 @@ def run_task3(cfg):
             xbot.vel = np.array([0.0, 0.0], dtype=float)
             xbot.direction = int(xbot_cfg["start_dir"])
 
-        # direction switches
         if kvrc.direction > 0 and kvrc.pos[0] >= right_x - 5:
             kvrc.direction = -1
         elif kvrc.direction < 0 and kvrc.pos[0] <= left_x + 5:
@@ -196,7 +192,6 @@ def run_task3(cfg):
         elif xbot.direction > 0 and xbot.pos[0] >= right_x - 5:
             xbot.direction = -1
 
-        # draw overlays
         if ren.get("draw_ped_centers", True):
             draw_ped_centers_cv(frame, ped_centers, radius=ren["ped_center_radius"])
 

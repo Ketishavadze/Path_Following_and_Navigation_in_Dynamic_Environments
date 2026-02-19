@@ -1,4 +1,3 @@
-# tests/test_task2_bidirectional.py
 import numpy as np
 
 from src.path.skeleton_route import skeleton_path, nearest_skeleton_pixel, bfs_shortest_path
@@ -32,12 +31,10 @@ def test_task2_bidirectional_progress(s_curve_mask):
 
     traj_A, traj_B, min_dists, params, width = simulate_task2(sx, sy, s_max, cfg)
 
-    # Use robot 0 from each group: check net displacement roughly toward opposite ends
     A0_start = traj_A[0, 0]
     A0_end = traj_A[-1, 0]
     B0_start = traj_B[0, 0]
     B0_end = traj_B[-1, 0]
 
-    # They should not end at exactly the same place; should move noticeably
     assert np.linalg.norm(A0_end - A0_start) > 20.0
     assert np.linalg.norm(B0_end - B0_start) > 20.0

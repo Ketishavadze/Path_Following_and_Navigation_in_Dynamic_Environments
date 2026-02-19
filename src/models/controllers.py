@@ -3,12 +3,8 @@ import numpy as np
 def tracking_accel(x, v, T, kp, kd, m=1.0):
     return (kp * (T - x) - kd * v) / m
 
-
 def desired_velocity_with_direction(flow_v: np.ndarray, direction_sign: int, vmin_x: float, clip_vy: float) -> np.ndarray:
-    """
-    Optical-flow desired velocity with forced horizontal direction.
-    direction_sign: +1 (right), -1 (left).
-    """
+
     vdes = flow_v.astype(float).copy()
     ax = max(abs(float(vdes[0])), float(vmin_x))
     vdes[0] = float(direction_sign) * ax
@@ -18,10 +14,7 @@ def desired_velocity_with_direction(flow_v: np.ndarray, direction_sign: int, vmi
 
 def step_state_2d(pos: np.ndarray, vel: np.ndarray, accel: np.ndarray,
                   dt: float, amax: float, vmax: float, w: int, h: int):
-    """
-    One integration step with stability guards & clamps.
-    Returns (new_pos, new_vel) or (None, None) if NaN happens.
-    """
+
     from src.models.forces import clamp_vec
 
     if not np.all(np.isfinite(accel)):

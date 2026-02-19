@@ -6,7 +6,6 @@ def load_binary_path_mask(path_img_path: str) -> np.ndarray:
     if img is None:
         raise FileNotFoundError(f"Cannot read image: {path_img_path}")
 
-    # black path on white background -> invert
     _, bw = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
     return (bw > 0).astype(np.uint8)
 

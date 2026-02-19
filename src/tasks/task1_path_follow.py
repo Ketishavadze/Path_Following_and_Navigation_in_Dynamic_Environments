@@ -36,7 +36,6 @@ def simulate_task1(sx, sy, s_max: float, cfg: dict):
     end_tol = float(cfg.get("stop", {}).get("end_tol", 6.0))
 
 
-    # start state
     x0 = np.array([sx(0.0), sy(0.0)], dtype=float)
     v0 = np.array([0.0, 0.0], dtype=float)
     state = np.array([x0[0], x0[1], v0[0], v0[1]], dtype=float)
@@ -62,7 +61,6 @@ def simulate_task1(sx, sy, s_max: float, cfg: dict):
     for _ in range(steps):
         traj.append(state.copy())
 
-        # border violation proxy (0 = inside)
         s_closest = closest_s_on_spline(s_samples, sx, sy, state[0:2])
         bf = border_force(state[0:2], s_closest, sx, sy, width, kb)
         outside_amount = np.linalg.norm(bf) / max(kb, 1e-9)
@@ -70,7 +68,6 @@ def simulate_task1(sx, sy, s_max: float, cfg: dict):
 
         state = rk4_step(state, dt, accel)
 
-        # stop near end
         end = np.array([sx(s_max), sy(s_max)], dtype=float)
         if np.linalg.norm(state[0:2] - end) < end_tol:
             traj.append(state.copy())

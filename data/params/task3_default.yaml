@@ -18,7 +18,6 @@ pedestrian_detection:
   area_max: 400
 
 robots:
-  # K-VRC (top flow)
   kvrc:
     name: "K-VRC"
     color_bgr: [0, 0, 255]
@@ -28,7 +27,6 @@ robots:
     lane_half_height: 55.0   
     start_dir: 1
  
-  # XBOT (bottom flow)
   xbot:
     name: "XBOT"
     color_bgr: [255, 0, 0]

@@ -1,4 +1,3 @@
-# tests/conftest.py
 import os
 import cv2
 import numpy as np
@@ -6,10 +5,7 @@ import pytest
 
 
 def make_s_curve_mask(h=260, w=360, thickness=26):
-    """
-    Create a clean synthetic S-like corridor mask:
-    path=1 (white), background=0 (black), same convention as your map mask.
-    """
+    
     img = np.zeros((h, w), dtype=np.uint8)
 
     pts = np.array([
@@ -22,45 +18,34 @@ def make_s_curve_mask(h=260, w=360, thickness=26):
         (60, 220),
     ], dtype=np.int32)
 
-    # draw polyline
     cv2.polylines(img, [pts], isClosed=False, color=255, thickness=thickness, lineType=cv2.LINE_AA)
 
-    # thicken ends (nice rounded caps)
     cv2.circle(img, tuple(pts[0]), thickness // 2, 255, -1)
     cv2.circle(img, tuple(pts[-1]), thickness // 2, 255, -1)
 
-    # Binary mask: 1 inside path, 0 outside
     mask = (img > 0).astype(np.uint8)
     return mask
 
 
 def write_mask_png(tmp_path, mask, name="map_raw.png"):
-    # Save as 0..255 grayscale image
     path = tmp_path / name
     cv2.imwrite(str(path), (mask * 255).astype(np.uint8))
     return path
 
 
 def make_two_flow_frames(h=240, w=320, n=30, radius=6, dx=3):
-    """
-    Build two frames with circles moving:
-      top half: left->right
-      bottom half: right->left
-    """
+   
     rng = np.random.default_rng(0)
 
-    # random positions: top half and bottom half
     top = np.column_stack([rng.uniform(0, w, n), rng.uniform(0, h * 0.45, n)])
     bot = np.column_stack([rng.uniform(0, w, n), rng.uniform(h * 0.55, h, n)])
 
-    # create frame0
     f0 = np.ones((h, w, 3), dtype=np.uint8) * 255
     for x, y in top:
         cv2.circle(f0, (int(x), int(y)), radius, (0, 0, 0), -1)
     for x, y in bot:
         cv2.circle(f0, (int(x), int(y)), radius, (0, 0, 0), -1)
 
-    # move for frame1
     top1 = top.copy()
     top1[:, 0] += dx
 
