@@ -13,7 +13,6 @@ def save_task1_outputs(mask, sx, sy, s_max, width, traj, border_dist, out_dir="o
     s_grid = np.linspace(0.0, s_max, 700)
     center, left, right = corridor_bounds(sx, sy, s_grid, width)
 
-    # Map plot
     plt.figure(figsize=(9, 9))
     plt.imshow(mask, cmap="gray", origin="upper")
     plt.plot(center[:, 0], center[:, 1], linewidth=2)
@@ -31,7 +30,6 @@ def save_task1_outputs(mask, sx, sy, s_max, width, traj, border_dist, out_dir="o
     plt.close()
     print(f"Saved: {p1}")
 
-    # Border violation plot
     plt.figure(figsize=(7, 4))
     plt.plot(border_dist)
     plt.title("Task 1: Border violation indicator (0 = inside)")
@@ -46,7 +44,7 @@ def save_task1_outputs(mask, sx, sy, s_max, width, traj, border_dist, out_dir="o
 def save_task2_plots(mask, sx, sy, s_max, width, traj_A, traj_B, min_dists, params, out_dir="outputs/task2"):
     os.makedirs(out_dir, exist_ok=True)
 
-    from src.path.corridor import corridor_bounds  # local import to avoid circulars
+    from src.path.corridor import corridor_bounds  
 
     s_grid = np.linspace(0.0, s_max, 700)
     center, left, right = corridor_bounds(sx, sy, s_grid, width)
@@ -144,3 +142,46 @@ def draw_robot_cv(frame, name, pos, color_bgr, radius=8, label_scale=0.55, label
         color_bgr,
         int(label_thickness),
     )
+
+def save_task1_gif(mask, sx, sy, s_max, width, traj,
+                   step_skip=5,
+                   duration=0.06,
+                   out_dir="outputs/task1"):
+    
+    os.makedirs(out_dir, exist_ok=True)
+
+    from src.path.corridor import corridor_bounds
+
+    s_grid = np.linspace(0.0, s_max, 700)
+    center, left, right = corridor_bounds(sx, sy, s_grid, width)
+
+    frames = []
+
+    for k in range(0, len(traj), step_skip):
+        fig, ax = plt.subplots(figsize=(7, 7))
+
+        ax.imshow(mask, cmap="gray", origin="upper")
+        ax.plot(center[:, 0], center[:, 1], linewidth=2)
+        ax.plot(left[:, 0], left[:, 1], linewidth=1)
+        ax.plot(right[:, 0], right[:, 1], linewidth=1)
+
+        # robot trajectory so far
+        ax.plot(traj[:k+1, 0], traj[:k+1, 1], linewidth=2)
+
+        # current robot position
+        ax.scatter(traj[k, 0], traj[k, 1], s=80)
+
+        ax.set_xlim(0, mask.shape[1])
+        ax.set_ylim(mask.shape[0], 0)
+        ax.set_title(f"Task 1 Animation (step {k})")
+
+        fig.canvas.draw()
+        frame = np.array(fig.canvas.renderer.buffer_rgba())[:, :, :3]
+        frames.append(frame)
+
+        plt.close(fig)
+
+    gif_path = os.path.join(out_dir, "task1_animation.gif")
+    imageio.mimsave(gif_path, frames, duration=duration)
+
+    print(f"Saved: {gif_path}")

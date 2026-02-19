@@ -2,7 +2,7 @@ import os
 import sys
 import numpy as np
 
-# --- allow running this file directly ---
+
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if PROJECT_ROOT not in sys.path:
@@ -15,6 +15,7 @@ from src.path.corridor import border_force
 from src.numerics.rk import rk4_step
 from src.common.config import load_config
 from src.common.viz import save_task1_outputs
+from src.common.viz import save_task1_outputs, save_task1_gif
 
 
 def simulate_task1(sx, sy, s_max: float, cfg: dict):
@@ -97,6 +98,8 @@ def main():
 
     traj, border_dist, width = simulate_task1(sx, sy, s_max, cfg)
     save_task1_outputs(mask, sx, sy, s_max, width, traj, border_dist)
+    save_task1_gif(mask, sx, sy, s_max, width, traj)
+
 
 
 if __name__ == "__main__":
